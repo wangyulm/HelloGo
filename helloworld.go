@@ -7,7 +7,14 @@ import (
 	"image/png"
 	"math"
 	"os"
+	"runtime"
+	"time"
 )
+
+type Vertex struct { //结构体定义
+	X int
+	Y int
+}
 
 func main() {
 	////基础打印
@@ -109,8 +116,56 @@ func main() {
 	fmt.Println(*pa, *pb)
 	fmt.Println(split(100))
 
-	fmt.Println(sqrt(1000))
+	fmt.Println(sqrt(1000)) //根号的一种实现方式
 
+	//switch,与C，C++等语言的区别是case所涉及值不必是整数，评估顺序为从上到下
+	fmt.Println(runtime.GOOS) //获取运行环境
+	fmt.Println("Go runs on ")
+	switch os := runtime.GOOS; os {
+	case "darwin":
+		fmt.Println("OS X.")
+	case "linux":
+		fmt.Println("linux")
+	default:
+		fmt.Printf("%s. \n", os)
+	}
+
+	//switch也可以不加条件，这是一种编写长if-then-else的简洁方法
+	t := time.Now()
+	switch {
+	case t.Hour() < 12:
+		fmt.Println("Good morning")
+	case t.Hour() < 17:
+		fmt.Println("Good afternoon")
+	default:
+		fmt.Println("Good everning")
+	}
+
+	// //defer会导致其作用的函数推迟到周围的function返回后再运行，为方便观察其他结果，现将有关内容全部注释
+	// defer fmt.Println("world")
+	// fmt.Println("hello")
+	// //defer会导致其作用的函数进入堆栈中，多个延迟调用按后进先出的顺序进行
+	// for i := 0; i < 10; i++ {
+	// 	defer fmt.Println(i)
+	// }
+	// //另一个注意的点
+	// ii := 0
+	// defer fmt.Println(ii) //将会打印0，表面defer后的函数的参数，在第一次遇见的时候就存进去了，所以要在defer前定义参数ii
+	// ii++
+	// //详见fc函数
+	// fmt.Println(fc())//结果返回2
+
+	v := Vertex{1, 2} //结构体声明方式
+	v.X = 4           //利用.访问结构体
+	fmt.Println(v.X)
+	pv := &v //结构体指针
+	pv.X = 5 //允许直接使用pv而不需要使用麻烦的(*pv)
+	fmt.Println(pv.X)
+
+}
+func fc() (i int) { //由于defer的特性，会先运行fc函数的全部，此时i获得返回值1，再运行defer后的函数并返回最终值2
+	defer func() { i++ }()
+	return 1
 }
 func swap(x, y *int) { //函数定义的方法之一，在括号中写变量1，变量2.... 类型
 	//x, y = y, x  //在函数中无论是交换地址还是交换值都无法影响主函数中的变量
