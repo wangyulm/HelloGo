@@ -109,6 +109,8 @@ func main() {
 	fmt.Println(*pa, *pb)
 	fmt.Println(split(100))
 
+	fmt.Println(sqrt(1000))
+
 }
 func swap(x, y *int) { //函数定义的方法之一，在括号中写变量1，变量2.... 类型
 	//x, y = y, x  //在函数中无论是交换地址还是交换值都无法影响主函数中的变量
@@ -125,4 +127,14 @@ func split(sum int) (x, y int) {
 }
 func GetData() (int, int) {
 	return 1000, 2000
+}
+func sqrt(x float64) float64 { //对Sqrt函数的模拟实现，利用牛顿方法，精度为0.000001，同时会输出回归次数
+	count := 0
+	z := 1.0
+	for x-z <= 0.000001 && x-z >= -0.000001 {
+		z -= (z*z - x) / (2 * z)
+		count++
+	}
+	fmt.Println(count)
+	return z
 }
