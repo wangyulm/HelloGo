@@ -131,7 +131,7 @@ func GetData() (int, int) {
 func sqrt(x float64) float64 { //对Sqrt函数的模拟实现，利用牛顿方法，精度为0.000001，同时会输出回归次数
 	count := 0
 	z := 1.0
-	for x-z <= 0.000001 && x-z >= -0.000001 {
+	for count < 10 {
 		z -= (z*z - x) / (2 * z)
 		count++
 	}
